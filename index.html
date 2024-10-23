@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.min.css"
+    />
+    <title>Informatic School Of WU Prediction</title>
+    <style type="text/css">
+      p {text-align: center;}
+      input[type="text"],
+      input[type="number"],
+      select {
+        width: 95%;
+      } 
+      input[type="text"],
+      input[type="number"],
+      input[list], /* เพิ่มกฎนี้เพื่อให้มีการปรับ style ของ input ที่ใช้ datalist */
+      select {
+        width: 100%; /* ปรับเป็น 100% จาก 95% */
+        padding: 10px; /* คงขนาดของ padding */
+        margin-bottom: 20px; /* คงขนาดของ margin-bottom */
+        border: 1px solid #ccc; /* คงขนาดของ border */
+        border-radius: 4px; /* คงขนาดของ border-radius */
+        box-sizing: border-box; /* แน่ใจว่า padding และ border ถูกคำนวณในขนาด width */
+      }
+
+      body {
+        font-family: "Sarabun", sans-serif;
+        font-size: 14px;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 20px;
+      }
+
+      form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: auto;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+      }
+
+      input[type="number"],
+      select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        /* So the padding doesn't increase the width */
+      }
+
+      button[type="submit"] {
+        background-color: #4caf50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #45a049;
+      }
+
+      h2 {
+        text-align: center;
+        color: #333;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <img
+        src="https://github.com/ffxthmmp/final-projectnaka/blob/main/logo.png?raw=true"
+        height="120px"
+        ,
+        width="120px"
+        alt="Informatic School of WU Logo"
+      />
+    </div>
+    <p>กรุณากรอกข้อมูลเพื่อทำการทำนายหลักสูตรที่มีความเหมาะสมกับคุณ</p>
+    <div class="column">
+      
+      <form method="post" action="/">
+        <label for="school">โรงเรียนที่สำเร็จการศึกษา:</label>
+        <input type="text" id="school" list="schools_list" name="schoolname" required>
+        <datalist id="schools_list">
+            {% for school in schools %}
+            <option value="{{ school.schoolname }}" data-id="{{ school.id }}">
+                {{ school.schoolname }}
+            </option>
+            {% endfor %}
+        </datalist>
+        <input type="hidden" id="selectedSchoolId" name="selectedSchoolId">
+
+<script>
+document.getElementById('school').addEventListener('input', function(e) {
+    const selectedName = e.target.value;
+    const options = document.querySelectorAll('#schools_list option');
+    for (const option of options) {
+        if (option.value === selectedName) {
+            document.getElementById('selectedSchoolId').value = option.getAttribute('data-id');
+            break;
+        }
+    }
+});
+</script>
+
+
+      <label for="S_PARENT">รายได้ของผู้ปกครอง</label>
+      <select name="S_PARENT" required>
+        <option value="0">ไม่มีรายได้</option>
+        <option value="1">น้อยกว่า 12,500 บาทต่อเดือน</option>
+        <option value="2">12,500-25,000 บาทต่อเดือน</option>
+        <option value="3">มากกว่า 25,000 บาทต่อเดือน</option></select
+      ><br />
+
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          // ดักจับการป้อนข้อมูลในฟิลด์ GPA_MATCH
+          document
+            .getElementsByName("GPA")[0]
+            .addEventListener("input", function (e) {
+              var value = this.value;
+              // ตรวจสอบและตัดทศนิยมเกิน 2 ตำแหน่ง
+              if (value.includes(".") && value.split(".")[1].length > 2) {
+                this.value = parseFloat(value).toFixed(2);
+              }
+            });
+        });
+      </script>
+      <label for="GPA">เกรดเฉลี่ยรวม(ตัวอย่าง 2.50) </label><br />
+      <input
+        type="number"
+        name="GPA"
+        step="0.01"
+        min="1"
+        max="4"
+        value="1"
+        required
+      />
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          // ดักจับการป้อนข้อมูลในฟิลด์ GPA_MATCH
+          document
+            .getElementsByName("GPA_MATCH")[0]
+            .addEventListener("input", function (e) {
+              var value = this.value;
+              // ตรวจสอบและตัดทศนิยมเกิน 2 ตำแหน่ง
+              if (value.includes(".") && value.split(".")[1].length > 2) {
+                this.value = parseFloat(value).toFixed(2);
+              }
+            });
+        });
+      </script>
+      <label for="GPA_MATCH"
+        >เกรดเฉลี่ยกลุ่มสาระวิชาคณิตศาสตร์ (ตัวอย่าง 2.50) </label
+      ><br />
+      <input
+        type="number"
+        name="GPA_MATCH"
+        step="0.01"
+        min="1"
+        max="4"
+        value="1"
+        required
+      />
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          // ดักจับการป้อนข้อมูลในฟิลด์ GPA_MATCH
+          document
+            .getElementsByName("GPA_SCI")[0]
+            .addEventListener("input", function (e) {
+              var value = this.value;
+              // ตรวจสอบและตัดทศนิยมเกิน 2 ตำแหน่ง
+              if (value.includes(".") && value.split(".")[1].length > 2) {
+                this.value = parseFloat(value).toFixed(2);
+              }
+            });
+        });
+      </script>
+      <label for="GPA_SCI"
+        >เกรดเฉลี่ยกลุ่มสาระวิชาวิทยาศาสตร์ (ตัวอย่าง 2.50)</label
+      >
+      <input
+        type="number"
+        name="GPA_SCI"
+        step="0.01"
+        min="1"
+        max="4"
+        value="1"
+        required
+      />
+      <button type="submit">ทำนาย</button>
+    </form>
+
+    {% if prediction_result is not none and prediction_result != '' %}
+
+    <div>
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          // ตรวจสอบว่ามีการเซ็ตค่า 'predictionMade' ใน localStorage หรือไม่
+          if (localStorage.getItem("predictionMade") === "true") {
+            // หากมี, ล้างค่าและไม่แสดง Swal.fire
+            localStorage.removeItem("predictionMade");
+          } else if ("{{ prediction_result|safe }}" != "") {
+            // หากไม่มีและมีผลการทำนาย, แสดง Swal.fire
+            Swal.fire({
+              title: "ผลการทำนายหลักสูตร",
+              html: "{{ prediction_result|safe }}", // Use the |safe filter to render HTML
+              icon: "success",
+              allowOutsideClick: false,
+              footer:
+                '<a href="https://informatics.wu.ac.th/">รายละเอียดเพิ่มเติมเกี่ยวกับหลักสูตร</a>',
+              didClose: () => {
+                // เมื่อ Swal ปิด, รีโหลดหน้าเว็บและเซ็ตค่า 'predictionMade' ใน localStorage
+                localStorage.setItem("predictionMade", "true");
+                window.location.reload();
+              },
+            });
+          }
+        });
+      </script>
+    </div>
+
+    {% endif %}
+  </body>
+</html>
